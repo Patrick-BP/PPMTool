@@ -35,5 +35,27 @@ public class ProjectController {
 
     }
 
+    @GetMapping("/{projectId}")
+    public ResponseEntity<?> getProjectById(@PathVariable String projectId){
+      Project project =  projectService.getProjectByIdentifier(projectId);
+        return new ResponseEntity<Project>(project, HttpStatus.OK);
+    }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllProjects(){
+        Iterable<Project>  projects = projectService.findAllProjects();
+        return new ResponseEntity<Iterable<Project> >(projects, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<?> deleteProject(@PathVariable String projectId){
+         projectService.deleteProjectByIdentifier(projectId);
+         return new ResponseEntity<String>("Project with ID: " + projectId + " was deleted", HttpStatus.OK);
+    }
+
+    @PatchMapping("/{projectId}")
+    public ResponseEntity<?> updateProject(@RequestBody Project project,  @PathVariable String projectId){
+        projectService.updateProjectByIdentifier(project, projectId);
+        return new ResponseEntity<String>("Project with ID: " + projectId + " was Updated", HttpStatus.OK);
+    }
 }
